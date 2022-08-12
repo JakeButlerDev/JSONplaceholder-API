@@ -1,6 +1,6 @@
 package com.careerdevs.jsonplaceholder.controllers;
 
-import com.careerdevs.jsonplaceholder.models.CommentModel;
+import com.careerdevs.jsonplaceholder.models.TodoModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,16 +10,16 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 @RestController
-@RequestMapping("/api/comments")
-public class CommentController {
+@RequestMapping("/api/todos")
+public class TodoController {
 
-    private final String jsonPHCommentEndpoint = "https://jsonplaceholder.typicode.com/comments";
+    private final String jsonPHTodoEndpoint = "https://jsonplaceholder.typicode.com/todos";
 
     @GetMapping("/all")
-    public ResponseEntity<?> getAllComments(RestTemplate restTemplate) {
+    public ResponseEntity<?> getAllTodos(RestTemplate restTemplate) {
         try {
 
-            CommentModel[] response = restTemplate.getForObject(jsonPHCommentEndpoint, CommentModel[].class);
+            TodoModel[] response = restTemplate.getForObject(jsonPHTodoEndpoint, TodoModel[].class);
 
             return ResponseEntity.ok(response);
 
@@ -33,16 +33,16 @@ public class CommentController {
     }
 
     @GetMapping("/id/{id}")
-    public ResponseEntity<?> getCommentById(RestTemplate restTemplate, @PathVariable String id) {
+    public ResponseEntity<?> getTodoById(RestTemplate restTemplate, @PathVariable String id) {
         try {
 
             Integer.parseInt(id);
 
-            System.out.println("Getting comment with id: " + id);
+            System.out.println("Getting task with id: " + id);
 
-            String url = jsonPHCommentEndpoint + "/" + id;
+            String url = jsonPHTodoEndpoint + "/" + id;
 
-            CommentModel response = restTemplate.getForObject(url, CommentModel.class);
+            TodoModel response = restTemplate.getForObject(url, TodoModel.class);
 
             return ResponseEntity.ok(response);
 
@@ -52,14 +52,13 @@ public class CommentController {
 
         } catch (HttpClientErrorException.NotFound e) {
 
-            return ResponseEntity.status(404).body("Comment Not Found With ID: " + id);
+            return ResponseEntity.status(404).body("User Not Found With ID: " + id);
 
         } catch (Exception e) {
 
             System.out.println(e.getClass());
             System.out.println(e.getMessage());
             return ResponseEntity.internalServerError().body(e.getMessage());
-
         }
     }
 }

@@ -1,7 +1,6 @@
 package com.careerdevs.jsonplaceholder.controllers;
 
 import com.careerdevs.jsonplaceholder.models.UserModel;
-import org.apache.catalina.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,14 +13,14 @@ import org.springframework.web.client.RestTemplate;
 @RequestMapping("/api/users")
 public class UserController {
 
-    private final String jsonPlaceholderEndpoint = "https://jsonplaceholder.typicode.com/users";
+    private final String jsonPHUserEndpoint = "https://jsonplaceholder.typicode.com/users";
 
     @GetMapping("/all")
     public ResponseEntity<?> getAllUsers(RestTemplate restTemplate) {
 
         try {
 
-            UserModel[] response = restTemplate.getForObject(jsonPlaceholderEndpoint, UserModel[].class);
+            UserModel[] response = restTemplate.getForObject(jsonPHUserEndpoint, UserModel[].class);
 
             // Will iterate through the array of users and spit out data on each one
 //            for (int i = 0; i < response.length; i++) {
@@ -50,7 +49,7 @@ public class UserController {
 
             System.out.println("Getting user with id: " + id);
 
-            String url = jsonPlaceholderEndpoint + "/" + id;
+            String url = jsonPHUserEndpoint + "/" + id;
 
             UserModel response = restTemplate.getForObject(url, UserModel.class);
 

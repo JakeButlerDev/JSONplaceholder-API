@@ -1,6 +1,6 @@
 package com.careerdevs.jsonplaceholder.controllers;
 
-import com.careerdevs.jsonplaceholder.models.CommentModel;
+import com.careerdevs.jsonplaceholder.models.AlbumModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,16 +10,16 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 @RestController
-@RequestMapping("/api/comments")
-public class CommentController {
+@RequestMapping("/api/albums")
+public class AlbumController {
 
-    private final String jsonPHCommentEndpoint = "https://jsonplaceholder.typicode.com/comments";
+    private final String jsonPHAlbumEndpoint = "https://jsonplaceholder.typicode.com/albums";
 
     @GetMapping("/all")
-    public ResponseEntity<?> getAllComments(RestTemplate restTemplate) {
+    public ResponseEntity<?> getAllAlbums(RestTemplate restTemplate) {
         try {
 
-            CommentModel[] response = restTemplate.getForObject(jsonPHCommentEndpoint, CommentModel[].class);
+            AlbumModel[] response = restTemplate.getForObject(jsonPHAlbumEndpoint, AlbumModel[].class);
 
             return ResponseEntity.ok(response);
 
@@ -33,16 +33,16 @@ public class CommentController {
     }
 
     @GetMapping("/id/{id}")
-    public ResponseEntity<?> getCommentById(RestTemplate restTemplate, @PathVariable String id) {
+    public ResponseEntity<?> getAlbumById(RestTemplate restTemplate, @PathVariable String id) {
         try {
 
             Integer.parseInt(id);
 
-            System.out.println("Getting comment with id: " + id);
+            System.out.println("Getting album with id: " + id);
 
-            String url = jsonPHCommentEndpoint + "/" + id;
+            String url = jsonPHAlbumEndpoint + "/" + id;
 
-            CommentModel response = restTemplate.getForObject(url, CommentModel.class);
+            AlbumModel response = restTemplate.getForObject(url, AlbumModel.class);
 
             return ResponseEntity.ok(response);
 
@@ -52,14 +52,13 @@ public class CommentController {
 
         } catch (HttpClientErrorException.NotFound e) {
 
-            return ResponseEntity.status(404).body("Comment Not Found With ID: " + id);
+            return ResponseEntity.status(404).body("Album Not Found With ID: " + id);
 
         } catch (Exception e) {
 
             System.out.println(e.getClass());
             System.out.println(e.getMessage());
             return ResponseEntity.internalServerError().body(e.getMessage());
-
         }
     }
 }
